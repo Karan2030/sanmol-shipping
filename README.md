@@ -17,7 +17,7 @@
 
 ## Screenshot
 
-![Screenshot](assets/sanship-screenshots)
+![Screenshot](assets/)
 
 ### Dummy API Integration
 
