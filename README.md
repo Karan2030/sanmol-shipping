@@ -15,6 +15,9 @@
 - Client Secret
 - Mode: Sandbox / Production
 
+## Screenshot
+
+![Screenshot](assets/)
 
 ### Dummy API Integration
 
