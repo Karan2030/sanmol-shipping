@@ -73,5 +73,4 @@ Trade-offs
 - Free API token auth is used.
 
 More Info
-- Each class and method includes DocBlocks for clarity.
-- Key WooCommerce hooks are commented with usage context.
+- Each class and method includes related information for clarity.
