@@ -44,6 +44,7 @@ Initializes the plugin only if the woocommerce is installed, loads dependencies,
 Key Components:
 
 class-sanship-shipping-method.php - registers “SanShip Express” using "WC_Shipping_Method"
+
 class-sanship-settings.php - this is used to add the settings page under WooCommerce
 
 Plugin Flow:
@@ -54,6 +55,13 @@ Plugin Flow:
 4. Tracking number saved and shown to admin & customer.
 5. Tracking link shown on My Account of user as well as in orders section.
 
+Design Decision
+
+- Used WordPress-native APIs and WooCommerce hooks for compatibility.
+- Settings stored using to keep config inside WooCommerce.
+- escaped all the outputs using esc_html and esc_url functions
+- Used mock APIs jsonplaceholder and reqres.in to simulate live production behavior
+  
 Trade-offs
 
 - Dummy APIs don’t support real auth or rate structures- it is calculated based on words length.
