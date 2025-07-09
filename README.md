@@ -17,7 +17,7 @@
 
 ## Screenshot
 
-![Screenshot](assets/)
+![Screenshot](assets/sanship screenshots)
 
 ### Dummy API Integration
 
