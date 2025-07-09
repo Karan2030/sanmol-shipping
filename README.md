@@ -61,6 +61,7 @@ Design Decision
 - Settings stored using to keep config inside WooCommerce.
 - escaped all the outputs using esc_html and esc_url functions
 - Used mock APIs jsonplaceholder and reqres.in to simulate live production behavior
+- used __() function for tranlations purposes
   
 Trade-offs
 
