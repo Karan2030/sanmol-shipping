@@ -15,6 +15,12 @@
 - Client Secret
 - Mode: Sandbox / Production
 
+## Api Config
+define('NCI_API_EMAIL', 'test@gmail.com');
+define('NCI_API_PASSWORD', 'test-token');
+
+add this login creds in wp-config
+
 ## Screenshot
 
 ![Screenshot](assets/)
