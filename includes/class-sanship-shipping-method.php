@@ -49,20 +49,51 @@ class SanShip_Shipping_Method extends WC_Shipping_Method
 
     public function calculate_shipping($package = [])
     {
-        $rate_cost = 0;
-        $response = wp_remote_get('https://jsonplaceholder.typicode.com/posts/1');
+        // Step 1: Admin login to get token
+        $login_response = wp_remote_post('https://nci.ky/api/login/ThirdPartyLogin', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'email' => defined('NCI_API_EMAIL') ? NCI_API_EMAIL : '',
+                'password' => defined('NCI_API_PASSWORD') ? NCI_API_PASSWORD : '',
+            ]),
+        ]);
 
-        if (is_wp_error($response)) {
-             $rate_cost = 99;  //if there's a error in the API call, we will set a default rate
+        if (is_wp_error($login_response)) {
+            $rate_cost = 99; // fallback rate
         } else {
-            $body = wp_remote_retrieve_body($response);
-            $data = json_decode($body, true);
+            $login_body = wp_remote_retrieve_body($login_response);
+            $login_data = json_decode($login_body, true);
+            if (!empty($login_data['token'])) {
+                $token = $login_data['token'];
 
-            if (isset($data['title'])) {
-                // we re calculating the rate based on the length of th etitle
-                $rate_cost = strlen($data['title']);
+                // Get delivery fee using token
+                $pickup_region = '1';
+                $dest_region = '2';
+                $roundtrip = '1';
+                $pkg_type = 'small';
+                $service_type = 'express';
+
+                $fee_response = wp_remote_get("https://nci.ky/api/dd/Get_DeliveryFee?pickup_region={$pickup_region}&dest_region={$dest_region}&roundtrip={$roundtrip}&pkg_type={$pkg_type}&service_type={$service_type}", [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                    ],
+                ]);
+                if (is_wp_error($fee_response)) {
+                    $rate_cost = 88; // fallback
+                } else {
+                    $fee_body = wp_remote_retrieve_body($fee_response);
+                    $fee_data = json_decode($fee_body, true);
+
+                    if (!empty($fee_data['data'])) {
+                        $rate_cost = floatval($fee_data['data']['fee']);
+                    } else {
+                        $rate_cost = 88; // fallback
+                    }
+                }
             } else {
-                $rate_cost = 88; //if there's a error in the API call, we will set a default rate
+                $rate_cost = 77; // fallback if token not received
             }
         }
 
